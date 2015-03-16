@@ -274,6 +274,7 @@ Utility functions
 PL/v8 provides the following utility built-in functions.
 
 - plv8.elog(elevel, msg1[, msg2, ...])
+- plv8.write_snapshot(fileName) (if enabled, see below)
 - plv8.quote_literal(str)
 - plv8.nullable(str)
 - plv8.quote_ident(str)
@@ -292,6 +293,14 @@ plv8.elog emits message to the client or the log file.  The elevel is one of
 - ERROR
 
 See the PostgreSQL manual for each error level.
+
+If compiled with heap snapshot support, write_snapshot will write a snapshot
+file of the current V8 heap. This file should get the extension '.heapsnapshot'
+and can be imported into Chrome or Chromium developer tools (in profiles tab,
+load profile...). The function returns true if the snapshot could be created.
+Notice that the snapshot file will be written by the PostgreSQL backend
+user. To avoid security risks this function is not available by default,
+and should only be activated for debug purposes in a controlled environment.
 
 Each functionality for quote family is identical to the built-in SQL function
 with the same name.
@@ -412,6 +421,22 @@ and return the value.  An example for these types are as follows.
         15
   (1 row)
 
+ES6 Language Features
+---------------------
+
+PL/v8 enables all shipping feature of the used V8 version. So with V8 4.1+
+many ES6 features, like block scoping, collections, generators and string
+templates, are enabled by default.
+
+Additional features can be enabled by setting the GUC plv8.v8_flags
+(e.g. "SET plv8.v8_flags = '--es_staging';").
+
+These flags are honoured once per user session when the V8 runtime is
+initialized. Compared to dialects (see below), which can be set on a
+per function base, the V8 flags cannot be changed once the runtime is
+initialized. So normally this setting should rather be set per database,
+and not per session.
+
 Remote debugger
 ---------------
 
@@ -470,5 +495,5 @@ are supported.
 - CoffeeScript (plcoffee)
 - LiveScript (plls)
 
-With PostgreSQL 9.1 or above, you are able to load tohse dialects via CREATE
+With PostgreSQL 9.1 or above, you are able to load those dialects via CREATE
 EXTENSION command.
