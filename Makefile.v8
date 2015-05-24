@@ -11,7 +11,7 @@
 # tools (http://www.chromium.org/developers/how-tos/install-depot-tools)
 # in your path.
 #-----------------------------------------------------------------------------#
-AUTOV8_VERSION = 4.1.0.21
+AUTOV8_VERSION = 4.3.66
 AUTOV8_DIR = build/v8-git-mirror-$(AUTOV8_VERSION)
 AUTOV8_OUT = build/v8-git-mirror-$(AUTOV8_VERSION)/out/native
 AUTOV8_LIB = $(AUTOV8_OUT)/libv8_snapshot.a
