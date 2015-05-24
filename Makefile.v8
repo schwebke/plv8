@@ -30,7 +30,7 @@ $(AUTOV8_DIR):
 	mv build/v8 $(AUTOV8_DIR)
 
 $(AUTOV8_LIB): $(AUTOV8_DIR)
-	env CXXFLAGS=-fPIC CFLAGS=-fPIC $(MAKE) -C build/v8-git-mirror-$(AUTOV8_VERSION) native -j12
+	env CXXFLAGS=-fPIC CFLAGS=-fPIC $(MAKE) -C build/v8-git-mirror-$(AUTOV8_VERSION) native
 	test -f $(AUTOV8_OUT)/libv8_base.a || \
 		ln -s $(abspath $(AUTOV8_OUT)/obj.target/tools/gyp/libv8_base.a) \
 			$(AUTOV8_OUT)/libv8_base.a

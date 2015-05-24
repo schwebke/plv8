@@ -6,7 +6,7 @@
  *-------------------------------------------------------------------------
  */
 #include "plv8.h"
-#include <libplatform/libplatform.h>
+#include "libplatform/libplatform.h"
 
 #include <new>
 
@@ -464,10 +464,8 @@ CallFunction(PG_FUNCTION_ARGS, plv8_exec_env *xenv,
 	Local<Object> recv = Local<Object>::New(plv8_isolate, xenv->recv);
 	Local<Function>		fn =
 		Local<Function>::Cast(recv->GetInternalField(0));
-		//Local<Function>::Cast(xenv->recv->GetInternalField(0));
 	Local<v8::Value> result =
 		DoCall(fn, recv, nargs, args);
-		//DoCall(fn, xenv->recv, nargs, args);
 
 	if (rettype)
 		return ToDatum(result, &fcinfo->isnull, rettype);
@@ -562,7 +560,6 @@ CallSRFunction(PG_FUNCTION_ARGS, plv8_exec_env *xenv,
 	Local<Object> recv = Local<Object>::New(plv8_isolate, xenv->recv);
 	Local<Function>		fn =
 		Local<Function>::Cast(recv->GetInternalField(0));
-		//Local<Function>::Cast(xenv->recv->GetInternalField(0));
 
 	Handle<v8::Value> result = DoCall(fn, recv, nargs, args);
 
