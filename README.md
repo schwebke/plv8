@@ -17,7 +17,15 @@ plv8 is tested with:
 It is also known to work with some older versions of gcc and v8.
 
 Also all tools that PostgreSQL and V8 require to be built are required if you
-are building those from source.
+are building those from source. Besides common build tools V8 requires
+Chromium's depot tools in your path:
+```
+git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+export PATH=`pwd`/depot_tools:"$PATH"
+```
+For more detail, please refer to
+http://dev.chromium.org/developers/how-tos/install-depot-tools
+
 
 INSTALL
 -------
