@@ -6,16 +6,15 @@
 # with statically link to v8 with snapshot.  This assumes certain directory
 # structure in v8 which may be different from version to another, but user
 # can specify the v8 version by AUTOV8_VERSION, too.
-#
-# The automatic download and build requires a working installation of depot
-# tools (http://www.chromium.org/developers/how-tos/install-depot-tools)
-# in your path.
 #-----------------------------------------------------------------------------#
 AUTOV8_VERSION = 4.3.66
 AUTOV8_DIR = build/v8-git-mirror-$(AUTOV8_VERSION)
 AUTOV8_OUT = build/v8-git-mirror-$(AUTOV8_VERSION)/out/native
+AUTOV8_DEPOT_TOOLS = build/depot_tools
 AUTOV8_LIB = $(AUTOV8_OUT)/libv8_snapshot.a
 AUTOV8_STATIC_LIBS = libv8_base.a libv8_snapshot.a libv8_libplatform.a libv8_libbase.a libicui18n.a libicuuc.a libicudata.a
+
+export PATH := $(abspath $(AUTOV8_DEPOT_TOOLS)):$(PATH)
 
 SHLIB_LINK += $(addprefix $(AUTOV8_OUT)/, $(AUTOV8_STATIC_LIBS))
 
@@ -24,8 +23,11 @@ all: $(AUTOV8_LIB)
 # For some reason, this solves parallel make dependency.
 plv8_config.h: $(AUTOV8_LIB)
 
-$(AUTOV8_DIR):
+$(AUTOV8_DEPOT_TOOLS):
 	mkdir -p build
+	cd build; git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+
+$(AUTOV8_DIR): $(AUTOV8_DEPOT_TOOLS)
 	cd build; fetch v8; cd v8; git checkout $(AUTOV8_VERSION); gclient sync
 	mv build/v8 $(AUTOV8_DIR)
 
